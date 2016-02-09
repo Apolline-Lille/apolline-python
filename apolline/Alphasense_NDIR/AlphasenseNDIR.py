@@ -27,7 +27,11 @@ class NDIRSensor:
         self.parser.add_argument('--device', type=str, required=False,
             default='/dev/ttyUSB0', help='serial device used to measure')
         self.parser.add_argument('--location', type=str, required=False,
-            default='xperium', help='physical location of the sensor')
+            default='unknown', help='physical location of the sensor')
+        self.parser.add_argument('--database', type=str, required=False,
+            default='sandbox', help='remote database used to upload the measurements')
+        self.parser.add_argument('--frequency', type=int, required=False,
+            default=60, help='data retrieval frequency in seconds')
         self.parser.add_argument('--user', type=str, required=True,
             help='user login to upload data online')
         self.parser.add_argument('--password', type=str, required=True,
@@ -37,13 +41,14 @@ class NDIRSensor:
         args = self.parser.parse_args()
         self.location = args.location
         self.device = args.device
-        self.connection = InfluxDBClient(args.host, args.port, args.user, args.password, self.dbname)
+        self.frequency = args.frequency
+        self.connection = InfluxDBClient(args.host, args.port, args.user, args.password, args.database)
 
     def run(self):
         self.configure()
         while 1:
             self.sense()
-            time.sleep(60)
+            time.sleep(self.frequency)
 
     def sense(self):
         class NDIRHelper(SeriesHelper):
@@ -52,7 +57,7 @@ class NDIRSensor:
                 fields = ['CO2', 'temperature', 'voltage']
                 tags = ['location']
                 client = self.connection
-                autocommit = True
+                autocommit = False
 
         try:
             ser=serial.Serial(self.device, 19200, timeout=67)
@@ -64,9 +69,10 @@ class NDIRSensor:
             volt=float(ser.readline())
             ser.close()
             NDIRHelper(location=self.location, CO2=carbon, temperature=temp, voltage=volt)
-            #print NDIRHelper._json_body_()
-        except ValueError:
+            NDIRHelper.commit()
+        except:
             print "Failed to read some values from sensor"
+
 
 
 if __name__ == '__main__':
