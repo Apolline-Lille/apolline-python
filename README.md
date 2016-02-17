@@ -1,4 +1,4 @@
-# Apolline Pyhton Agent for Raspberry
+# Apolline Python Agent for Raspberry
 
 ## Instructions
 
