@@ -59,7 +59,7 @@ class OPCSensor:
                 self.sense()
                 time.sleep(self.frequency)
         finally:
-            this.alpha.off()
+            self.alpha.off()
 
     def sense(self):
         class OPCHelper(SeriesHelper):
