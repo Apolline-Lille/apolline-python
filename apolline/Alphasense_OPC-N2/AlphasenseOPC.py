@@ -51,8 +51,8 @@ class OPCSensor:
         self.alpha = OPCN2(spi)
 
     def run(self):
+        self.configure()
         try:
-            self.configure()
             self.alpha.on()
             while 1:
                 self.sense()
