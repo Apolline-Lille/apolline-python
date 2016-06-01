@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Alphasense NDIR Driver for Apolline
 """
@@ -6,9 +7,6 @@ import serial
 import time
 from influxdb import InfluxDBClient
 from influxdb import SeriesHelper
-
-# myclient.create_database(dbname)
-# myclient.create_retention_policy('awesome_policy', '3d', 3, default=True)
 
 class NDIRSensor:
     """
@@ -21,7 +19,7 @@ class NDIRSensor:
         self.dbname = database
         self.parser = argparse.ArgumentParser(description='Apolline agent for Alphasense NDIR sensor')
         self.parser.add_argument('--host', type=str, required=False,
-            default='apolline.lille.inria.fr', help='hostname of Apolline backend')#192.168.99.100
+            default='apolline.lille.inria.fr', help='hostname of Apolline backend')
         self.parser.add_argument('--port', type=int, required=False,
             default=8086, help='port of Apolline backend')
         self.parser.add_argument('--device', type=str, required=False,
