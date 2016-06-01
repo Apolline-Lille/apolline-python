@@ -43,7 +43,6 @@ class OPCSensor:
         self.device = args.device
         self.frequency = args.frequency
         self.connection = InfluxDBClient(args.host, args.port, args.user, args.password, self.dbname)
-
         spi = spidev.SpiDev()
         spi.open(args.bus, args.device)
         spi.mode         = OPCSensor.SPI_MODE
