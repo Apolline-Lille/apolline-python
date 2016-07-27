@@ -54,6 +54,7 @@ class OPCSensor:
         self.configure()
         try:
             self.alpha.on()
+            print (self.alpha.read_info_string())
             while 1:
                 self.sense()
                 time.sleep(self.frequency)
@@ -68,9 +69,8 @@ class OPCSensor:
                 tags = ['location']
                 client = self.connection
                 autocommit = True
-
         try:
-            hist = self.alpha.read_histogram()
+            hist = self.alpha.histogram()
             OPCHelper(location=self.location, 
                       temperature = int(hist['Temperature']),
                       pressure    = float(hist['Pressure']),
