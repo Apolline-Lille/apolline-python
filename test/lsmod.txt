@@ -1,0 +1,20 @@
+Module                  Size  Used by
+cfg80211              427855  0 
+rfkill                 16037  1 cfg80211
+ftdi_sio               31193  0 
+usbserial              22115  1 ftdi_sio
+evdev                  11396  3 
+snd_bcm2835            20511  0 
+snd_pcm                75698  1 snd_bcm2835
+snd_timer              19160  1 snd_pcm
+snd                    51844  3 snd_bcm2835,snd_timer,snd_pcm
+bcm2835_gpiomem         3040  0 
+spi_bcm2835             7286  0 
+bcm2835_wdt             3225  0 
+i2c_bcm2708             4770  0 
+uio_pdrv_genirq         3164  0 
+hid_apple               4925  0 
+uio                     8000  1 uio_pdrv_genirq
+i2c_dev                 5859  0 
+fuse                   83461  1 
+ipv6                  347530  30 
