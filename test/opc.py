@@ -16,6 +16,6 @@ time.sleep(9e-3)
 
 for i in range(60):
     resp = spi.xfer([0x00])
-    info_string.append(chr(resp))
+    info_string.append(chr(resp[0]))
 
 ''.join(info_string)
