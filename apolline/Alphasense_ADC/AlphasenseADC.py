@@ -11,9 +11,6 @@ from influxdb import SeriesHelper
 class ADCSensor:
     """
     ?  Alphasense ADC
-    N  1281.1
-    T  26.6
-    V  400
     """
     def __init__(self,database='apolline'):
         self.dbname = database
@@ -23,13 +20,13 @@ class ADCSensor:
         self.parser.add_argument('--port', type=int, required=False,
             default=8086, help='port of Apolline backend')
         self.parser.add_argument('--device', type=str, required=False,
-            default='/dev/ttyUSB0', help='serial device used to measure')
+            default='/dev/ttyUSB1', help='serial device used to measure')
         self.parser.add_argument('--location', type=str, required=False,
             default='unknown', help='physical location of the sensor')
         self.parser.add_argument('--database', type=str, required=False,
             default='sandbox', help='remote database used to upload the measurements')
-        self.parser.add_argument('--frequency', type=int, required=False,
-            default=60, help='data retrieval frequency in seconds')
+        self.parser.add_argument('--frequency', type=float, required=False,
+            default=0.5, help='data retrieval frequency in seconds')
         self.parser.add_argument('--user', type=str, required=True,
             help='user login to upload data online')
         self.parser.add_argument('--password', type=str, required=True,
@@ -43,31 +40,32 @@ class ADCSensor:
         self.connection = InfluxDBClient(args.host, args.port, args.user, args.password, args.database)
 
     def run(self):
-        self.configure()
-        while 1:
-            self.sense()
-            time.sleep(self.frequency)
+        try:
+            self.configure()
+            ser=serial.Serial(self.device, 9600, timeout=123)
+            while 1:
+                self.sense(ser)
+                time.sleep(self.frequency)
+            ser.close()
 
-    def sense(self):
+    def sense(self,ser):
         class ADCHelper(SeriesHelper):
             class Meta:
                 series_name = 'events.stats.{location}'
-                fields = ['temperature','CO_1','CO_1V','CO_2','CO_2V','NO_1','NO_1V','NO_2','NO_2V','NO2_1','NO2_1V','NO2_2','NO2_2V']
+                fields = ['temperature','Voie_1','Voie_1V','Voie_2','Voie_2V','Voie_3','Voie_3V','Voie_4','Voie_4V','Voie_5','Voie_5V','Voie_6','Voie_6V']
                 tags = ['location']
                 client = self.connection
                 autocommit = False
         try:
-            ser=serial.Serial(self.device, 19200, timeout=123)
-            line=ser.readline()
-            ser.close()
+            line = ser.readline()
             if not line: return
-            line=line.replace("\r\n","")
-            value=line.split(";")
-            ADCHelper(location=self.location, temperature=value[1], CO_1=value[2], CO_1V=value[3], CO_2=value[4], CO_2V=value[5], NO_1=value[6], NO_1V=value[7], NO_2=value[8], NO_2V=value[9], NO2_1=value[10], NO2_1V=value[11], NO2_2=value[12], NO2_2V=value[13])
-            ADCHelper.commit()
+            line = line.replace("\r\n","")
+            value = line.split(";")
+            if len(value) == 15:
+                ADCHelper(location=self.location, temperature=value[2], Voie_1=value[3], Voie_1V=value[4], Voie_2=value[5], Voie_2V=value[6], Voie_3=value[7], Voie_3V=value[8], Voie_4=value[9], Voie_4V=value[10], Voie_1=value[11], Voie_1V=value[12], Voie_2=value[13], Voie_2V=value[14])
+                ADCHelper.commit()
         except:
-            print "Failed to read some values from sensor"
-
+            print "Failed to read metrics from ADC sensor on "+self.device
 
 
 if __name__ == '__main__':
