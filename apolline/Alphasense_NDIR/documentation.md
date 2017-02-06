@@ -16,7 +16,7 @@ Raspberry Pi 2 will save the data in a text file using `line protocol` of Influx
 
 The function *run()* uses *sense_into_file()* and *write_from()* instead of *sense()*
 
-## Simple calculation of storage.
+## Simple calculation of storage
 
 1 day = 86 400 seconds
 
@@ -25,7 +25,7 @@ If we use the default frequency (10 seconds), the sensor will collect 8640 lines
 A line of data = 90 Bytes
 The data within a day = 777 600 Bytes = 759.4 KB
 
-## function reference.
+## function reference
 
 > sense_into_file(self)
 
