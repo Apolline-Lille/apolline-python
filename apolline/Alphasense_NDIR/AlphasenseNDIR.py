@@ -76,14 +76,9 @@ class NDIRSensor:
             NDIRHelper.commit()
         except:
             print "Failed to read some values from sensor"
-            
+    # This method will collect the data from sensor, and call the write into file method.
     def sense_into_file(self):
         # (Described at documentation that the max number for each insert query is 5000)
-        # if no file exist in the directory, create a new file 
-        # if it has files check the first file which has less than 5000 points.
-        # add data into files
-        # if the file depass 5000, turn to next file.
-        # no file is less than 5000, create a new file.
         class NDIRHelper(SeriesHelper):
             class Meta:
                 series_name = 'events.stats.{location}'
@@ -116,7 +111,7 @@ class NDIRSensor:
             print "Connection to influxDB failed, Is the server running ?"
             return False
     
-    # File must match InfluxDB line protocol.
+    # File must match InfluxDB line protocol. That means less than 5000 lines of data.
     # FILE MUST ENDED WITH LINUX LF END LINE.
     def write_from(self, directory_path, db="apolline"):
         files = [ x for x in os.listdir(directory_path)] # list all file.
@@ -135,6 +130,7 @@ class NDIRSensor:
             else:
                 print "Time : {time} ".format(time = datetime.datetime.now())
 
+    #check if file exists.
     def file_exists(self, file_path):
         if not file_path:
             return False
@@ -142,9 +138,9 @@ class NDIRSensor:
             return False
         else:
             return True
-        
-    def name_file(self, cardinal, date=datetime.datetime.now().strftime("%Y%m%d")):
+            
     # Assume that for one day it will collect less than 100 * 5000 lines of data.
+    def name_file(self, cardinal, date=datetime.datetime.now().strftime("%Y%m%d")):
         if cardinal < 10:
             return date + "N0" + str(cardinal) + ".txt"
         else:
@@ -166,13 +162,13 @@ class NDIRSensor:
         cardinal = 1
         i = 0
 #       compare with the date
-        
         while i < len(files):
             if (files[i][:8] == datetime.datetime.now().strftime("%Y%m%d")):
                 date_has_file = True
                 file = files[i]
                 cardinal = int(files[i][-6: -4]) + 1
             i += 1
+
 #       if exist that date
         if date_has_file:
 #           if lines numbers < 5000
