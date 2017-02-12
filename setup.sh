@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # install the required modules.
-apt-get clean && apt-get update && apt-get install -y python-pip python-dev
+# apt-get clean && apt-get update && apt-get install -y python-pip python-dev
 
-pip install influxdb
-pip install pyserial
-pip install spidev
-pip install py-opc
+# pip install influxdb
+# pip install pyserial
+# pip install spidev
+# pip install py-opc
 
 # Let user enter the parameter to customize(location, frequency etc.)
 while getopts ":s:u:p:d:l:f:" opt; do
@@ -43,13 +43,13 @@ done
 
 # Verify if the sensor is valid.
 if [ "$sensor" == "ADC" ]; then
-    run_script="nohup python /home/pi/apolline/Alphasense_ADC/AlphasenseADC.py --user $user --password $passwd --database $database --location $location --frequency $frequency &"
+    run_script="nohup python $PWD/apolline/Alphasense_ADC/AlphasenseADC.py --user $user --password $passwd --database $database --location $location --frequency $frequency &"
     echo "The sensor is $sensor"
 elif [ "$sensor" == "NDIR" ]; then
-    run_script="nohup python /home/pi/apolline/Alphasense_NDIR/AlphasenseNDIR.py --user $user --password $passwd --database $database --location $location --frequency $frequency &"
+    run_script="nohup python $PWD/apolline/Alphasense_NDIR/AlphasenseNDIR.py --user $user --password $passwd --database $database --location $location --frequency $frequency &"
     echo "The sensor is $sensor"
 elif [ "$sensor" == "OPC-N2" ]; then
-    run_script="nohup python /home/pi/apolline/Alphasense_OPC-N2/AlphasenseOPC.py --user $user --password $passwd --database $database --location $location --frequency $frequency &"
+    run_script="nohup python $PWD/apolline/Alphasense_OPC-N2/AlphasenseOPC.py --user $user --password $passwd --database $database --location $location --frequency $frequency &"
     echo "The sensor is $sensor"
 else
     run_script=""
