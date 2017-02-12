@@ -10,6 +10,7 @@ import requests
 import datetime
 from influxdb import InfluxDBClient
 from influxdb import SeriesHelper
+from BaseSensor.BaseSensor import BaseSensor
 
 class NDIRSensor:
     """
