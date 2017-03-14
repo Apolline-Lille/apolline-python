@@ -12,7 +12,7 @@ Then, you run the `setup.sh` script with the following parameters:
 |-----------:|:---------------------------------------------------------------------|
 | `-s`       | The sensor to setup : `ADC`, `NDIR` or `OPC-N2` (not supported yet)  |
 | `-u`       | The user to login in the InfluxDB database                           |
-| `-p`       | The password to authenticate in the InfluxDB databas                 |
+| `-p`       | The password to authenticate in the InfluxDB database                |
 | `-d`       | The name of the database volume to be used (`apolline` or `sandbox`) |
 | `-l`       | The physical location of the sensor                                  |
 | `-f`       | The sampling frequency of the sensor (in seconds)                    |
