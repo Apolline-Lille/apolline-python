@@ -118,7 +118,7 @@ class NDIRSensor:
         files.sort()
         for datafile in files:
             line_number = self.line_number_of_file(directory_path + "/" + datafile)
-            if self.connection_established() and line_number >= 4000:
+            if self.connection_established() and line_number >= 1:
                 try:
                     # write the data to the InfluxDB.
                     response = requests.post('http://{host}:{port}/write?db={db_name}'.format(host = self.host, port = self.port, db_name = db),
