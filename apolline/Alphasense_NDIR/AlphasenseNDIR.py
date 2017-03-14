@@ -47,7 +47,7 @@ class NDIRSensor:
         self.frequency = args.frequency
         self.connection = InfluxDBClient(args.host, args.port, args.user, args.password, args.database)
         if not os.path.exists('data'):
-            os.makedir('data')
+            os.mkdir('data')
 
     def run(self):
         self.configure()
