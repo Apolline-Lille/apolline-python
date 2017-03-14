@@ -1,36 +1,37 @@
 # Apolline Python Agent for Raspberry
 
 ## Instructions
-
 You first need to clone the repository:
-
 ```bash
-git clone https://github.com/Spirals-Team/apolline-python.git
+git clone https://github.com/Apolline-Lille/apolline-python.git
 ```
 
-Then, run the setup script with the parameters:
+Then, you run the `setup.sh` script with the following parameters:
 
-| Parameters | Descriptions                                                                               |
-|-----------:|:-------------------------------------------------------------------------------------------|
-| -s         | It stands for the using sensor. Three types of sensor supported : ADC, NDIR, OPC-N2        |
-| -u         | It stands for the user to login the InfluxDB                                               |
-| -p         | It stands for the password for InfluxDB                                                    |
-| -d         | It stands for the database's name                                                          |
-| -l         | It stands for the location of the Raspberry pi and which will be used as the name of table |
-| -f         | It stands for the frequency of the sensor                                                  |
+| Parameters | Descriptions                                                         |
+|-----------:|:---------------------------------------------------------------------|
+| `-s`       | The sensor to setup : `ADC`, `NDIR` or `OPC-N2` (not supported yet)  |
+| `-u`       | The user to login in the InfluxDB database                           |
+| `-p`       | The password to authenticate in the InfluxDB databas                 |
+| `-d`       | The name of the database volume to be used (`apolline` or `sandbox`) |
+| `-l`       | The physical location of the sensor                                  |
+| `-f`       | The sampling frequency of the sensor (in seconds)                    |
 
-* Let's take NDIR for example :
 
+## Examples
+### Automated execution
+To sample every 10 seconds with the NDIR sensor, you can execute the following command:
 ```bash
-cd apolline-python
-sudo ./setup.sh -s NDIR -u USER -p PASSWD -d DB_NAME -l LOC -f 10
+cd apolline-python/
+sudo ./setup.sh -s NDIR -u [USER] -p [PASSWD] -d sandbox -l [LOCATION] -f 10
 ```
 
-Then you should restart the Raspberry Pi.
+Then, you should restart the Raspberry Pi to apply the changes.
 
-Or if you want to run the script manually, run the apolline scripts as follow:
-
+### Manual execution
+If you rather prefer to run the script manually, run the apolline scripts as follows:
 ```bash
-./ndir.sh --user USER --password PASSWD --database DB_NAME --location LOC --frequency 10
-./adc.sh --user USER --password PASSWD --database DB_NAME --location LOC --frequency 10
+cd apolline-python/
+./ndir.sh --user [USER] --password [PASSWD] --database sandbox --location [LOCATION] --frequency 10
+./adc.sh --user [USER] --password [PASSWD] --database sandbox --location [LOCATION] --frequency 10
 ```
