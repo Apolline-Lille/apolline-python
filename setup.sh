@@ -85,4 +85,4 @@ exit 0
 EOF
 ) > /etc/rc.local
 
-echo "Writting to rc.local done, you can reboot the Raspberry."
+echo "Writing to rc.local completed, you can reboot the Raspberry."
