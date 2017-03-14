@@ -48,7 +48,7 @@ class NDIRSensor:
         self.connection = InfluxDBClient(args.host, args.port, args.user, args.password, args.database)
         directory = os.path.dirname("data")
         if not os.path.exists(directory):
-            os.makedirs(directory)
+            os.makedir(directory)
 
     def run(self):
         self.configure()
